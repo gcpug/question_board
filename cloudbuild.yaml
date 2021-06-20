@@ -1,0 +1,14 @@
+steps:
+  - name: 'ubuntu'
+    entrypoint: 'bash'
+    args: [ '-c', 'sed -i -e s#__FIREBASE_WEB_API_KEY__#$$FIREBASE_WEB_API_KEY# public/config.js' ]
+    secretEnv: [ 'FIREBASE_WEB_API_KEY' ]
+  - name: 'ubuntu'
+    entrypoint: 'bash'
+    args: [ '-c', 'sed -i -e s#__PROJECT_ID__#$PROJECT_ID# public/config.js' ]
+  - name: 'us-central1-docker.pkg.dev/gcpug-container/firebase/main:v9.12.1'
+    args: [ 'deploy', '--project', '$PROJECT_ID']
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/FIREBASE_WEB_API_KEY/versions/latest
+      env: 'FIREBASE_WEB_API_KEY'
