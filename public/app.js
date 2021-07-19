@@ -1,7 +1,6 @@
 var gcpubqb = {};
 
 (function () {
-    // login処理
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth()
         .signInWithPopup(provider)
@@ -12,8 +11,7 @@ var gcpubqb = {};
 
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = credential.accessToken;
-            um3et.currentUser = result.user;
-            watchCollectionImages();
+            gcpubqb.currentUser = result.user;
         }).catch((error) => {
         console.log(error);
         // Handle Errors here.
@@ -26,3 +24,43 @@ var gcpubqb = {};
         // ...
     });
 }());
+
+gcpubqb.insertEvents = function(eventName) {
+    var db = firebase.firestore();
+
+    var roles = {}
+    roles[gcpubqb.currentUser.uid] = "owner"
+    db.collection("Events").add({
+        Name: eventName,
+        CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        Roles: roles
+    })
+    .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });
+};
+
+gcpubqb.listEvents = function() {
+    var db = firebase.firestore();
+    var eventList = new Vue({
+        el: '#eventList',
+        data: {
+          events: []
+        }
+      });
+
+    db.collection("Events").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${doc.data()}`);
+            eventList.events.push({
+                "Id":doc.id,
+                "Name":doc.data().Name,
+                "CreatedAt":doc.data().CreatedAt,
+            });
+        });
+    });
+    
+};
