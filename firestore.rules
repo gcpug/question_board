@@ -9,9 +9,10 @@ service cloud.firestore {
       allow create: if request.auth != null
       allow update,delete: if getRole(resource) == "owner"
       allow read: if true
-      match /private/finances {
-        allow read: if request.resource.auth &&
-          request.resource.auth.token.role == 'Finance'
+      match /Questions/{question_id} {
+        allow read: if true;
+        allow create: if request.auth != null
+        allow update,delete: if resource.data.AuthorID == request.auth.uid
       }
     }
   }

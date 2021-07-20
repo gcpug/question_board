@@ -25,16 +25,16 @@
 <body>
 <script src="/config.js"></script>
 <script src="/app.js"></script>
-<script src="/event.js"></script>
+<script src="/qb.js"></script>
 <form>
-  <label for="eventName">Event Name:</label>
-  <input type="text" id="eventName" name="eventName"></input>
-  <input type="button" onclick="gcpugqb.insertEvents(eventName.value)" value="Create New Event"></input>
-</form>
-<div id="eventList">
-  <ol>
-      <li v-for="event in events"><a v-bind:href="'/qb.html?event=' + event.EventID">{{ event.Name }}</a><button>DELETE</button></li>
-  </ol>
-</div>
+    <label for="question">Question Name:</label>
+    <input type="text" id="question" name="question"></input>
+    <input type="button" onclick="gcpugqb.insertQuestion(gcpugqb.eventID, question.value)" value="Add Question"></input>
+  </form>
+  <div id="questionList">
+    <ol>
+        <li v-for="question in questions">{{ question.Content }}<button>DELETE</button></li>
+    </ol>
+  </div>
 </body>
 </html>
