@@ -10,9 +10,12 @@ service cloud.firestore {
       allow update,delete: if getRole(resource) == "owner"
       allow read: if true
       match /Questions/{question_id} {
+        function isEventOwner() {
+            return get(/databases/$(database)/documents/Events/{event_id}).data.roles[request.auth.uid] == "owner"
+        }
         allow read: if true;
         allow create: if request.auth != null
-        allow update,delete: if resource.data.AuthorID == request.auth.uid
+        allow update,delete: if resource.data.AuthorID == request.auth.uid || isEventOwner()
       }
     }
   }
