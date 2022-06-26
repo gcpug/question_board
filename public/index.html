@@ -31,6 +31,9 @@
   <input type="text" id="eventName" name="eventName"></input>
   <input type="button" onclick="gcpugqb.insertEvents(eventName.value)" value="Create New Event"></input>
 </form>
+
+<input type="button" onclick="gcpugqb.helloAuth()" value="Hello Auth"></input>
+
 <div id="eventList">
   <ol>
       <li v-for="event in events"><a v-bind:href="'/qb.html?event=' + event.EventID">{{ event.Name }}</a><button>DELETE</button></li>

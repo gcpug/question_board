@@ -25,6 +25,35 @@ var gcpugqb = {};
     });
 }());
 
+gcpugqb.helloAuth = function() {
+    if (firebase.auth().currentUser) {
+        // Retrieve JWT to identify the user to the Identity Platform service.
+        // Returns the current token if it has not expired. Otherwise, this will
+        // refresh the token and return a new one.
+        try {
+            const token = await firebase.auth().currentUser.getIdToken();
+            const response = await fetch('/api/auth/hello', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    Authorization: `Bearer ${token}`,
+                },
+                // body: 'team=' + team, // send application data (vote)
+            });
+            if (response.ok) {
+                const text = await response.text();
+                window.alert(text);
+                window.location.reload();
+            }
+        } catch (err) {
+            console.log(`Error when submitting vote: ${err}`);
+            window.alert('Something went wrong... Please try again!');
+        }
+    } else {
+        window.alert('User not signed in.');
+    }
+};
+
 gcpugqb.insertEvents = function(eventName) {
     var db = firebase.firestore();
 
