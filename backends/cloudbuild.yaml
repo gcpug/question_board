@@ -1,15 +1,18 @@
 steps:
   - name: 'golang:1.18'
     entrypoint: 'go'
+    dir: 'backends'
     args: ['build', '-o', 'app', 'github.com/gcpug/question_board/backends/cmd/server']
     env: ['CGO_ENABLED=0']
   - name: 'gcr.io/kaniko-project/executor:v1.3.0'
+    dir: 'backends'
     args:
       - --destination=asia-northeast1-docker.pkg.dev/$PROJECT_ID/backend/$BRANCH_NAME:$COMMIT_SHA
       - --cache=true
       - --cache-ttl=6h
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     entrypoint: 'gcloud'
+    dir: 'backends'
     args:
       - beta
       - run
