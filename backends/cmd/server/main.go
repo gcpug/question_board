@@ -1,14 +1,36 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+
+	firebase "firebase.google.com/go"
+	"github.com/gcpug/question_board/backends"
 )
 
 func main() {
+	ctx := context.Background()
+
 	log.Print("starting server...")
+
+	app, err := firebase.NewApp(ctx, nil)
+	if err != nil {
+		panic(err)
+	}
+	authClient, err := app.Auth(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	authHandler, err := backends.NewAuthHandler(ctx, authClient)
+	if err != nil {
+		panic(err)
+	}
+
+	http.HandleFunc("/auth/hello", authHandler.Handler)
 	http.HandleFunc("/", handler)
 
 	// Determine port for HTTP service.
@@ -30,5 +52,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if name == "" {
 		name = "World"
 	}
+
 	fmt.Fprintf(w, "Hello %s!\n", name)
 }
