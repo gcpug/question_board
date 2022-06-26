@@ -25,7 +25,7 @@ var gcpugqb = {};
     });
 }());
 
-gcpugqb.helloAuth = function() {
+gcpugqb.helloAuth = async function() {
     if (firebase.auth().currentUser) {
         // Retrieve JWT to identify the user to the Identity Platform service.
         // Returns the current token if it has not expired. Otherwise, this will
