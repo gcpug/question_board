@@ -23,6 +23,7 @@ func (h *AuthHandler) Handler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	t := r.Header.Get("Authorization")
+	fmt.Printf("Authorization Header Body:%s\n", t)
 
 	token, err := h.fireAuth.VerifyIDToken(ctx, t)
 	if err != nil {
