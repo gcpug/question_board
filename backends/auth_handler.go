@@ -24,8 +24,13 @@ func (h *AuthHandler) Handler(w http.ResponseWriter, r *http.Request) {
 
 	t := r.Header.Get("Authorization")
 	fmt.Printf("Authorization Header Body:%s\n", t)
+	const bearer = "Bearer "
+	if len(t) <= len(bearer) {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
 
-	token, err := h.fireAuth.VerifyIDToken(ctx, t)
+	token, err := h.fireAuth.VerifyIDToken(ctx, t[len(bearer):])
 	if err != nil {
 		w.WriteHeader(http.StatusForbidden)
 		_, err := fmt.Fprintf(w, "%s", err)
