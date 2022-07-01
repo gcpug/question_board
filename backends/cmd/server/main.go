@@ -30,7 +30,7 @@ func main() {
 		panic(err)
 	}
 
-	http.HandleFunc("/auth/hello", authHandler.Handler)
+	http.HandleFunc("/api/auth/hello", authHandler.Handler)
 	http.HandleFunc("/", handler)
 
 	// Determine port for HTTP service.
