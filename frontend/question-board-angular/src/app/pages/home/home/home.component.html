@@ -1,0 +1,7 @@
+Hello {{ (user$ | async)?.displayName }}!
+
+<ul>
+  <li *ngFor="let event of events$ | async">
+    {{ event['Name'] }}
+  </li>
+</ul>

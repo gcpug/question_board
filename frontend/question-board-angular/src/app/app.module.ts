@@ -1,0 +1,24 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import * as firebaseConfig from '../../angular-fire.config.json';
+import { HeaderLayoutComponent } from './general/header-layout/header-layout.component';
+
+@NgModule({
+  declarations: [AppComponent, HeaderLayoutComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
